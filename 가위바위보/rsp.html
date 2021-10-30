@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>가위 바위 보 게임</title>
+    <style>
+      #computer {
+        width: 142px;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="computer"></div>
+    <div>
+      <button id="scissors" class="btn">가위</button>
+      <button id="rock" class="btn">바위</button>
+      <button id="paper" class="btn">보</button>
+    </div>
+    <div id="score">0</div>
+    <script>
+      const $computer = document.querySelector('#computer');
+      const $score = document.querySelector('#score');
+      const $scissors = document.querySelector('#scissors');
+      const $rock = document.querySelector('#rock');
+      const $paper = document.querySelector('#paper');
+      const IMG_URL = './rsp.png';
+
+      $computer.style.background = `url(${IMG_URL}) 0 0`;
+      $computer.style.backgroundSize = 'auto 200px';
+
+      const rspX = {
+        scissors: '0', //가위
+        rock: '-220px', //바위
+        paper: '-440px', //보
+      };
+
+      let computerChoice = 'scissors';
+      const changeComputerHand = () => {
+        if (computerChoice === 'scissors') {
+          //가위면..
+          computerChoice = 'rock';
+          //   $computer.style.background = `url(${IMG_URL}) ${rspX.rock} 0`;
+          //   $computer.style.backgroundSize = 'auto 200px';
+        } else if (computerChoice === 'rock') {
+          //바위
+          computerChoice = 'paper';
+          //   $computer.style.background = `url(${IMG_URL}) ${rspX.paper} 0`;
+          //   $computer.style.backgroundSize = 'auto 200px';
+        } else if (computerChoice === 'paper') {
+          //보
+          computerChoice = 'scissors';
+          //   $computer.style.background = `url(${IMG_URL}) ${rspX.scissors} 0`;
+          //   $computer.style.backgroundSize = 'auto 200px';
+        }
+        $computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
+        $computer.style.backgroundSize = 'auto 200px';
+      };
+      setInterval(changeComputerHand, 1000);
+    </script>
+  </body>
+</html>

@@ -70,7 +70,9 @@
       // 해결방안2. 버튼클릭 못하게 막고...$paper.removeEventListener('click', clickButton)...1초 뒤에 다시 활성화...
       // 해결방안3. 변수(플래그변수)를 추가 clickable = true..해서..내부 코드 실행 안되게..
       let clickable = true;
-      let score = 0;
+      let computer = 0;
+      let me = 0;
+
       const clickButton = () => {
         if (clickable) {
           console.log('클릭>>', intervalId);
@@ -89,22 +91,25 @@
 
           if ([2, -1].includes(diff)) {
             //   if (diff === 2 || diff === -1) {
-            score += 1;
-            console.log('승리');
+            me += 1;
             message = '승리';
           } else if (diff === -2 || diff === 1) {
-            score -= 1;
-            console.log('패배');
+            computer += 1;
             message = '패배';
           } else if (diff === 0) {
-            console.log('무승부');
             message = '무승부';
           }
-          $score.textContent = `${message} 총: ${score}점`;
-          setTimeout(() => {
-            clickable = true;
-            intervalId = setInterval(changeComputerHand, 100);
-          }, 2000);
+          if (me >= 3) {
+            $score.textContent = `나의 승리 ${me}:${computer}`;
+          } else if (computer >= 3) {
+            $score.textContent = `컴퓨터의 승리 ${me}:${computer}`;
+          } else {
+            $score.textContent = `${message} ${me}:${computer}`;
+            setTimeout(() => {
+              clickable = true;
+              intervalId = setInterval(changeComputerHand, 100);
+            }, 2000);
+          }
         }
       };
       $rock.addEventListener('click', clickButton);

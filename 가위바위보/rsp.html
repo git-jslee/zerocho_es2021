@@ -58,7 +58,28 @@
         $computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
         $computer.style.backgroundSize = 'auto 200px';
       };
-      setInterval(changeComputerHand, 1000);
+      let intervalId = setInterval(changeComputerHand, 100);
+
+      // 오류..버튼 클릭을 여러번 클릭시..setTime out 이 여러번 실행되는 문제 발생..
+      // 해결방안1. setTimeout 안에 clearInterval 추가..
+      // 해결방안2. 버튼클릭 못하게 막고...$paper.removeEventListener('click', clickButton)...1초 뒤에 다시 활성화...
+      // 해결방안3. 변수를 추가 clickable = true..해서..
+      let clickable = true;
+      const clickButton = () => {
+        if (clickable) {
+          console.log('클릭>>', intervalId);
+          clearInterval(intervalId);
+          clickable = false;
+          // 점수 계산 및 화면 표시
+          setTimeout(() => {
+            clickable = true;
+            intervalId = setInterval(changeComputerHand, 100);
+          }, 2000);
+        }
+      };
+      $rock.addEventListener('click', clickButton);
+      $scissors.addEventListener('click', clickButton);
+      $paper.addEventListener('click', clickButton);
     </script>
   </body>
 </html>

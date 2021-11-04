@@ -32,6 +32,7 @@
       const $result = document.querySelector('#result');
       let startTime;
       let endTime;
+      const records = []; //평균속도 구하기
 
       $screen.addEventListener('click', (event) => {
         if (event.target.classList.contains('waiting')) {
@@ -53,7 +54,12 @@
           // 초록
           // 끝 시간 재기..
           // 시간 차이 저장하기..
-          $result.textContent = `${endTime - startTime}ms`;
+          const current = endTime - startTime;
+          records.push(current);
+          const average = records.reduce((a, c) => a + c) / records.length;
+          $result.textContent = `현재: ${current}ms, 평균: ${average}, 횟수: ${records.length}`;
+          startTime = null;
+          endTime = null;
           $screen.classList.remove('now');
           $screen.classList.add('waiting');
           $screen.textContent = '클릭해서 시작하세요';

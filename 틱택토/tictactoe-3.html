@@ -85,8 +85,10 @@
         turn = turn === 'X' ? 'O' : 'X';
       };
 
+      let clickable = true;
       const callback = (event) => {
         // 칸에 글자가 있나?
+        if (!clickable) return;
         if (event.target.textContent !== '') {
           console.log('빈칸이 아닙니다.');
           return;
@@ -99,13 +101,17 @@
 
         // 컴퓨터 턴 만들기
         if (turn === 'X') {
-          const emptyCells = rows.flat().filter((v) => !v.textContent);
-          const randomCell =
-            emptyCells[Math.floor(Math.random() * emptyCells.length)];
-          randomCell.textContent = 'X';
-          // const hasWinner = checkWinner(randomCell);
-          // 승자가 있으면
-          checkWinnerAndDraw(randomCell);
+          clickable = false;
+          setTimeout(() => {
+            const emptyCells = rows.flat().filter((v) => !v.textContent);
+            const randomCell =
+              emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            randomCell.textContent = 'X';
+            // const hasWinner = checkWinner(randomCell);
+            // 승자가 있으면
+            checkWinnerAndDraw(randomCell);
+            clickable = true;
+          }, 1000);
         }
       };
 

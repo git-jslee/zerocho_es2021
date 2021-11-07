@@ -67,12 +67,13 @@
         return hasWinner;
       };
 
-      const checkWinnerAndDraw = (traget) => {
+      const checkWinnerAndDraw = (target) => {
         console.log(target);
         const hasWinner = checkWinner(target);
         // 승자가 있으면
         if (hasWinner) {
           $result.textContent = `${turn}님이 승리`;
+          $table.removeEventListener('click', callback);
           return;
         }
         // 승자가 없으면
@@ -82,13 +83,6 @@
           return;
         }
         turn = turn === 'X' ? 'O' : 'X';
-        if (turn === 'X') {
-          const emptyCells = rows.flat().filter((v) => !v.textContent);
-          const randomCell =
-            emptyCells[Math.floor(Math.random() * emptyCells.length)];
-          randomCell.textContent = 'X';
-          const hasWinner = hasWinner(randomCell);
-        }
       };
 
       const callback = (event) => {
@@ -100,20 +94,8 @@
         // 빈칸 이면..
         console.log('빈칸입니다.');
         event.target.textContent = turn;
-        // 승자가 있으면
-        const hasWinner = checkWinner(event.target);
-        if (hasWinner) {
-          $result.textContent = `${turn}님이 승리!`;
-          $table.removeEventListener('click', callback);
-          return;
-        }
-        // 무승부 검사(칸이 꽉찬지 확인)
-        const draw = rows.flat().every((cell) => cell.textContent);
-        if (draw) {
-          $result.textContent = `무승부`;
-          return;
-        }
-        turn = turn === 'X' ? 'O' : 'X';
+        // 승부 판단하기
+        checkWinnerAndDraw(event.target);
 
         // 컴퓨터 턴 만들기
         if (turn === 'X') {
@@ -121,20 +103,9 @@
           const randomCell =
             emptyCells[Math.floor(Math.random() * emptyCells.length)];
           randomCell.textContent = 'X';
-          const hasWinner = checkWinner(randomCell);
+          // const hasWinner = checkWinner(randomCell);
           // 승자가 있으면
-          if (hasWinner) {
-            $result.textContent = `${turn}님이 승리!`;
-            $table.removeEventListener('click', callback);
-            return;
-          }
-          // 무승부 검사(칸이 꽉찬지 확인)
-          const draw = rows.flat().every((cell) => cell.textContent);
-          if (draw) {
-            $result.textContent = `무승부`;
-            return;
-          }
-          turn = turn === 'X' ? 'O' : 'X';
+          checkWinnerAndDraw(randomCell);
         }
       };
 
